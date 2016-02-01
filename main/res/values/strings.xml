@@ -9,7 +9,9 @@
     <!--for admods-->
     <string name="play_bottom_banner_id">ca-app-pub-4079505062217481/3399497657</string>
     <string name="play_top_banner_id">ca-app-pub-4079505062217481/5790900854</string>
+
     <string name="title_activity_high_score">HighScoreActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
