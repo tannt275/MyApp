@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/main_bg"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="tannt275.actionbrain.MainActivity"
+    tools:showIn="@layout/activity_main">
+
+    <TextView
+        android:id="@+id/adjustView"
+        style="@style/Base.TextAppearance.AppCompat.Body2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="3dp"
+        android:gravity="center"
+        android:text="@string/descriptionMe"
+        android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/adjustView"
+        android:layout_marginBottom="7dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/MainButton"
+            android:id="@+id/main_normalMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="@string/main_normal_mode" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/main_timedMode"
+            style="@style/MainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="@string/main_timed_mode" />
+
+        <android.support.v7.widget.AppCompatButton
+            style="@style/MainButton"
+            android:id="@+id/main_highScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/main_high_score" />
+
+    </LinearLayout>
+
+</RelativeLayout>
