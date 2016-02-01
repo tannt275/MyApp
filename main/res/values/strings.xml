@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ReuseActionBrain</string>
+
+    <string name="descriptionMe">Powered by Sir[Un]</string>
+    <string name="main_high_score">High Score</string>
+    <string name="main_normal_mode">Normal Mode</string>
+    <string name="main_timed_mode">Time Mode</string>
+
+    <!--for admods-->
+    <string name="play_bottom_banner_id">ca-app-pub-4079505062217481/3399497657</string>
+    <string name="play_top_banner_id">ca-app-pub-4079505062217481/5790900854</string>
+    <string name="title_activity_high_score">HighScoreActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
 </resources>
