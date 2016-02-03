@@ -11,7 +11,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.control.RandomGame;
+import tannt275.reuseactionbrain.dialog.AppDialogs;
 import tannt275.reuseactionbrain.model.GameModel;
 
 public class GameFragment extends Fragment {
@@ -30,9 +32,14 @@ public class GameFragment extends Fragment {
     private int TIMEOUT_GAME = 2 * 1000;
     private GameModel gameModel;
 
-    public static GameFragment newInstance(String param1, String param2) {
+    private int _modeGame;
+    private int _timeSet;
+
+    public static GameFragment newInstance(int _mode, int _timeSet) {
         GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
+        args.putInt(AppConfig.MODE_IN_BUNDLE, _mode);
+        args.putInt(AppConfig.TIME_SET, _timeSet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,6 +48,8 @@ public class GameFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            _modeGame = getArguments().getInt(AppConfig.MODE_IN_BUNDLE);
+            _timeSet = getArguments().getInt(AppConfig.TIME_SET);
         }
     }
 
@@ -59,7 +68,13 @@ public class GameFragment extends Fragment {
         imbCorrect.setOnClickListener(answerCorrectListener);
         imbWrong.setOnClickListener(answerWrongListener);
         initAllView();
-        startCount();
+
+        if (_modeGame == AppConfig.MODE_NORMAL){
+            startCount();
+        } else if (_modeGame == AppConfig.MODE_TIME){
+            countDown();
+        }
+
         return rootView;
     }
 
@@ -69,7 +84,7 @@ public class GameFragment extends Fragment {
         updateUi(gameModel);
     }
 
-    private void updateUi(GameModel g) {
+    private void updateUi(final GameModel g) {
 
         Log.e(TAG, "game was generate: " + g.convertToString());
         score.setText(String.valueOf(g.get_score()));
@@ -83,6 +98,9 @@ public class GameFragment extends Fragment {
             @Override
             public void run() {
                 Log.e(TAG, "time out with current game...");
+                if (threadCount.isAlive())
+                    threadCount.isInterrupted();
+                AppDialogs.showDialogTimeOut(getActivity(), g);
             }
         };
         handler.postDelayed(runnable, TIMEOUT_GAME);
@@ -137,15 +155,15 @@ public class GameFragment extends Fragment {
                 int i = 0;
                 while (true) {
                     try {
-                        i++;
                         final int finalI = i;
+                        Thread.sleep(200);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 time.setText(String.valueOf((finalI * 200)));
                             }
                         });
-                        Thread.sleep(200);
+                        i++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -155,4 +173,27 @@ public class GameFragment extends Fragment {
         threadCount.start();
     }
 
+    private void countDown(){
+        threadCount = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int i = _timeSet;
+                while (i >= 0){
+                    try {
+                        final int finalI = i;
+                        Thread.sleep(200);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                time.setText(String.valueOf(finalI * 200));
+                            }
+                        });
+                        i--;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
 }

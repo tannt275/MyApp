@@ -9,6 +9,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.ui.fragment.GameFragment;
 
 public class PlayActivity extends AppCompatActivity {
@@ -19,10 +20,18 @@ public class PlayActivity extends AppCompatActivity {
     private AdView adViewBottom;
     private AdRequest adRequestBottom;
 
+    private int _modeGet;
+    private int _timeSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null){
+            _modeGet = bundle.getInt(AppConfig.MODE_IN_BUNDLE);
+            _timeSet = bundle.getInt(AppConfig.TIME_SET);
+        }
 
         adRequestTop = new AdRequest.Builder().build();
         adViewTop = (AdView) findViewById(R.id.play_adview_top);

@@ -13,6 +13,15 @@ public class GameModel extends BaseModel {
     private int _result;
     private boolean _isCorrect;
     private String _operator;
+    private int _mode;
+
+    public int get_mode() {
+        return _mode;
+    }
+
+    public void set_mode(int _mode) {
+        this._mode = _mode;
+    }
 
     public GameModel (int _score){
         this._score = _score;
