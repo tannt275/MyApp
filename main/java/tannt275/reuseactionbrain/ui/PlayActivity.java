@@ -1,9 +1,11 @@
 package tannt275.reuseactionbrain.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -13,7 +15,7 @@ import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.ui.fragment.GameFragment;
 
 public class PlayActivity extends AppCompatActivity {
-
+    public static String TAG = PlayActivity.class.getSimpleName();
 
     private AdView adViewTop;
     private AdRequest adRequestTop;
@@ -31,6 +33,7 @@ public class PlayActivity extends AppCompatActivity {
         if (bundle != null){
             _modeGet = bundle.getInt(AppConfig.MODE_IN_BUNDLE);
             _timeSet = bundle.getInt(AppConfig.TIME_SET);
+            Log.e(TAG, "mode game: " + _modeGet + " time set = " + _timeSet);
         }
 
         adRequestTop = new AdRequest.Builder().build();

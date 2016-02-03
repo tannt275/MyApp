@@ -98,8 +98,7 @@ public class GameFragment extends Fragment {
             @Override
             public void run() {
                 Log.e(TAG, "time out with current game...");
-                if (threadCount.isAlive())
-                    threadCount.isInterrupted();
+
                 AppDialogs.showDialogTimeOut(getActivity(), g);
             }
         };

@@ -17,5 +17,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dialog_mode">Mode : %1$s</string>
+    <string name="dialog_set_time">Set time to play</string>
+    <string name="dialog_time_edt">Enter time here</string>
+    <string name="dialog_time_empty">Time is empty</string>
+    <string name="dialog_time_out_bound">Time have to be smaller 100</string>
 
 </resources>
