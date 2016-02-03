@@ -1,12 +1,12 @@
 package tannt275.reuseactionbrain.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,10 +21,14 @@ public class GameFragment extends Fragment {
     private ImageButton imbCorrect, imbWrong;
     private TextView firstNumber, secondNumber, operator, result;
 
-    private Button btnNextGame;
     private static int _score = 0;
 
     private Thread threadCount;
+    private Handler handler;
+    private Runnable runnable;
+
+    private int TIMEOUT_GAME = 2 * 1000;
+    private GameModel gameModel;
 
     public static GameFragment newInstance(String param1, String param2) {
         GameFragment fragment = new GameFragment();
@@ -51,8 +55,9 @@ public class GameFragment extends Fragment {
         secondNumber = (TextView) rootView.findViewById(R.id.game_secondNumber);
         operator = (TextView) rootView.findViewById(R.id.game_operator);
         result = (TextView) rootView.findViewById(R.id.game_result);
-        btnNextGame = (Button) rootView.findViewById(R.id.nextGame);
-        btnNextGame.setOnClickListener(nextGameListener);
+
+        imbCorrect.setOnClickListener(answerCorrectListener);
+        imbWrong.setOnClickListener(answerWrongListener);
         initAllView();
         startCount();
         return rootView;
@@ -60,8 +65,8 @@ public class GameFragment extends Fragment {
 
     private void initAllView() {
 
-        GameModel g = RandomGame.generateGame(0);
-        updateUi(g);
+        gameModel = RandomGame.generateGame(0);
+        updateUi(gameModel);
     }
 
     private void updateUi(GameModel g) {
@@ -72,16 +77,57 @@ public class GameFragment extends Fragment {
         secondNumber.setText(String.valueOf(g.get_secondNumber()));
         operator.setText(g.get_operator());
         result.setText(String.valueOf(g.get_result()));
+
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "time out with current game...");
+            }
+        };
+        handler.postDelayed(runnable, TIMEOUT_GAME);
     }
 
-    private View.OnClickListener nextGameListener = new View.OnClickListener() {
+    private View.OnClickListener answerCorrectListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            _score++;
-            GameModel game = RandomGame.generateGame(_score);
-            updateUi(game);
+            Log.e(TAG, "button correct was clicked...");
+            handler.removeCallbacks(runnable);
+            if (gameModel.is_isCorrect()) {
+                Log.e(TAG, "user and me with same answer...");
+                nextGame();
+            } else {
+                Log.e(TAG, "user and me with not same answer...");
+                endGame();
+            }
+
         }
     };
+    private View.OnClickListener answerWrongListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            handler.removeCallbacks(runnable);
+            Log.e(TAG, "button wrong was clicked...");
+            if (gameModel.is_isCorrect()) {
+                Log.e(TAG, "user and me with not same answer...");
+                endGame();
+            } else {
+                Log.e(TAG, "user and me with same answer...");
+                nextGame();
+            }
+        }
+    };
+
+    private void nextGame() {
+        Log.e(TAG, "game is continous...");
+        _score++;
+        gameModel = RandomGame.generateGame(_score);
+        updateUi(gameModel);
+    }
+
+    private void endGame() {
+        Log.e(TAG, "run to end game...");
+    }
 
     private void startCount() {
 

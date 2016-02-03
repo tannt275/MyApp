@@ -97,11 +97,4 @@
             android:layout_height="2dp"
             android:layout_weight="1" />
     </LinearLayout>
-    <Button
-        android:layout_marginTop="20dp"
-        android:id="@+id/nextGame"
-        android:text="NextGame"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </LinearLayout>
