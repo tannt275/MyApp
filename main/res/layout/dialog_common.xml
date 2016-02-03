@@ -44,24 +44,19 @@
         android:textSize="20sp"
         android:visibility="visible" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/adjustView1"
-            android:layout_width="2dp"
-            android:layout_height="2dp"
-            android:layout_centerInParent="true" />
 
         <TextView
             style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/adjustView1"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
             android:text="New : "
             android:textColor="@android:color/white"
             android:textSize="20sp" />
@@ -69,34 +64,29 @@
         <TextView
             android:id="@+id/dialog_newScore"
             style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/adjustView1"
-            android:gravity="center"
+            android:layout_weight="1"
             android:text="100"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
 
-    <RelativeLayout
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/adjustView2"
-            android:layout_width="2dp"
-            android:layout_height="1dp"
-            android:layout_centerInParent="true" />
 
         <TextView
             style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/adjustView2"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:gravity="end"
             android:text="Best : "
             android:textColor="@android:color/white"
             android:textSize="20sp" />
@@ -104,15 +94,15 @@
         <TextView
             android:id="@+id/dialog_bestScore"
             style="@style/Base.TextAppearance.AppCompat.Body2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/adjustView2"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:gravity="start"
             android:text="100"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

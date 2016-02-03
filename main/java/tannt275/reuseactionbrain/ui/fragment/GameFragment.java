@@ -29,7 +29,7 @@ public class GameFragment extends Fragment {
     private Handler handler;
     private Runnable runnable;
 
-    private int TIMEOUT_GAME = 2 * 1000;
+    private int TIMEOUT_GAME = 3 * 1000;
     private GameModel gameModel;
 
     private int _modeGame;
@@ -50,6 +50,13 @@ public class GameFragment extends Fragment {
         if (getArguments() != null) {
             _modeGame = getArguments().getInt(AppConfig.MODE_IN_BUNDLE);
             _timeSet = getArguments().getInt(AppConfig.TIME_SET);
+            Log.e(TAG, "mode game: " + _modeGame + " time set: " + _timeSet);
+
+            if (_modeGame == AppConfig.MODE_NORMAL){
+                startCount();
+            } else if (_modeGame == AppConfig.MODE_TIME){
+                countDown();
+            }
         }
     }
 
@@ -68,12 +75,6 @@ public class GameFragment extends Fragment {
         imbCorrect.setOnClickListener(answerCorrectListener);
         imbWrong.setOnClickListener(answerWrongListener);
         initAllView();
-
-        if (_modeGame == AppConfig.MODE_NORMAL){
-            startCount();
-        } else if (_modeGame == AppConfig.MODE_TIME){
-            countDown();
-        }
 
         return rootView;
     }
@@ -100,6 +101,7 @@ public class GameFragment extends Fragment {
                 Log.e(TAG, "time out with current game...");
 
                 AppDialogs.showDialogTimeOut(getActivity(), g);
+
             }
         };
         handler.postDelayed(runnable, TIMEOUT_GAME);
@@ -154,12 +156,13 @@ public class GameFragment extends Fragment {
                 int i = 0;
                 while (true) {
                     try {
+
                         final int finalI = i;
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                time.setText(String.valueOf((finalI * 200)));
+                                time.setText(AppConfig.parseIntToString(finalI ));
                             }
                         });
                         i++;
@@ -173,26 +176,28 @@ public class GameFragment extends Fragment {
     }
 
     private void countDown(){
+
         threadCount = new Thread(new Runnable() {
             @Override
             public void run() {
                 int i = _timeSet;
-                while (i >= 0){
+                while ( i > 0){
                     try {
                         final int finalI = i;
-                        Thread.sleep(200);
+                        Thread.sleep(100);
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                time.setText(String.valueOf(finalI * 200));
+                                time.setText(AppConfig.parseIntToString(finalI * 1000));
                             }
                         });
-                        i--;
+                        i --;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
+        threadCount.start();
     }
 }
