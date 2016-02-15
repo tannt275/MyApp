@@ -26,7 +26,6 @@ public class GameFragment extends Fragment {
 
     private static int _score = 0;
 
-    private Thread threadCount;
     private Handler handler;
     private Runnable runnable;
 
@@ -38,6 +37,16 @@ public class GameFragment extends Fragment {
 
     private CountAsynTask countAsynTask;
     private CountDownTask countDownTask;
+
+    private GameCallBack gameCallBack;
+
+    public GameCallBack getGameCallBack() {
+        return gameCallBack;
+    }
+
+    public void setGameCallBack(GameCallBack gameCallBack) {
+        this.gameCallBack = gameCallBack;
+    }
 
     public static GameFragment newInstance(int _mode, int _timeSet) {
         GameFragment fragment = new GameFragment();
@@ -107,9 +116,7 @@ public class GameFragment extends Fragment {
             @Override
             public void run() {
                 Log.e(TAG, "time out with current game...");
-
-//                AppDialogs.showDialogTimeOut(getActivity(), g);
-
+                endGame();
             }
         };
         handler.postDelayed(runnable, TIMEOUT_GAME);
@@ -154,77 +161,40 @@ public class GameFragment extends Fragment {
 
     private void endGame() {
         Log.e(TAG, "run to end game...");
-    }
-
-    /*private void startCount() {
-
-        threadCount = new Thread(new Runnable() {
+//        AppDialogs.showDialogTimeOut(getActivity(), gameModel);
+        AppDialogs.DialogCallBack callBack = new AppDialogs.DialogCallBack() {
             @Override
-            public void run() {
-                int i = 0;
-                while (true) {
-                    try {
-
-                        final int finalI = i;
-                        Thread.sleep(100);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                time.setText(AppConfig.parseIntToString(finalI));
-                            }
-                        });
-                        i++;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onHome() {
+                if (gameCallBack != null)
+                gameCallBack.onHome();
             }
-        });
-        threadCount.start();
-    }
 
-    private void countDown() {
-
-        threadCount = new Thread(new Runnable() {
             @Override
-            public void run() {
-                int i = _timeSet;
-                while (i > 0) {
-                    try {
-                        final int finalI = i;
-                        Thread.sleep(100);
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                time.setText(AppConfig.parseIntToString(finalI * 1000));
-                            }
-                        });
-                        i--;
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+            public void onShare(GameModel gameModel) {
+                if (gameCallBack != null)
+                    gameCallBack.onShare(gameModel);
             }
-        });
-        threadCount.start();
-    }*/
+
+            @Override
+            public void onReplay() {
+                if (gameCallBack != null)
+                    gameCallBack.onReplay();
+            }
+        };
+        AppDialogs.showDialogTimeOut(getActivity(), gameModel, callBack);
+    }
 
     private class CountAsynTask extends AsyncTask<String, String, String> {
 
-//        private int startTime;
         private String reStr;
-
-        /*public CountAsynTask(int startTime) {
-            this.startTime = startTime;
-        }*/
 
         @Override
         protected String doInBackground(String... params) {
             int i = 0;
-            while (true){
+            while (true) {
                 try {
                     Thread.sleep(100);
-                    i ++;
+                    i++;
                     reStr = String.valueOf(i * 100) + "";
                     publishProgress(reStr);
 
@@ -251,7 +221,7 @@ public class GameFragment extends Fragment {
         }
     }
 
-    private class CountDownTask extends AsyncTask<String, String, String>{
+    private class CountDownTask extends AsyncTask<String, String, String> {
         private int timeCountDown;
         private String reStr;
 
@@ -267,7 +237,7 @@ public class GameFragment extends Fragment {
             do {
                 try {
                     Thread.sleep(100);
-                    i --;
+                    i--;
                     reStr = String.valueOf(i * 100) + "";
                     publishProgress(reStr);
 
@@ -277,7 +247,7 @@ public class GameFragment extends Fragment {
                     e.printStackTrace();
                     reStr = e.getMessage();
                 }
-            } while ( i > 0);
+            } while (i > 0);
             return reStr;
         }
 
@@ -291,5 +261,11 @@ public class GameFragment extends Fragment {
             super.onProgressUpdate(values);
             time.setText(values[0]);
         }
+    }
+
+    public interface GameCallBack {
+        public void onHome();
+        public void onShare(GameModel game);
+        public void onReplay();
     }
 }

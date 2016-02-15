@@ -19,7 +19,7 @@ public class AppDialogs {
 
     public static String TAG = AppDialogs.class.getSimpleName();
 
-    public static void showDialogTimeOut(Context context, final GameModel gameModel) {
+    public static void showDialogTimeOut(Context context, final GameModel gameModel, final DialogCallBack callBack) {
 
         Dialog dialog = new Dialog(context);
         dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -41,35 +41,34 @@ public class AppDialogs {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shareAction(gameModel);
+                if (callBack != null)
+                    callBack.onShare(gameModel);
             }
         });
 
         replay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replayAction(gameModel.get_mode());
+                if (callBack != null)
+                    callBack.onReplay();
             }
         });
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                homeAction();
+                if (callBack != null)
+                    callBack.onHome();
             }
         });
 
         dialog.show();
     }
 
-    private static void homeAction() {
-        Log.e(TAG, "return to home... ");
-    }
+    public interface DialogCallBack {
+        public void onHome();
 
-    private static void replayAction(int gameModel) {
-        Log.e(TAG, "return to replay...");
-    }
+        public void onShare(GameModel gameModel);
 
-    private static void shareAction(GameModel gameModel) {
-        Log.e(TAG, "return to share...");
+        public void onReplay();
     }
 }

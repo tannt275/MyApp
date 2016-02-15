@@ -12,9 +12,10 @@ import com.google.android.gms.ads.AdView;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.model.GameModel;
 import tannt275.reuseactionbrain.ui.fragment.GameFragment;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements GameFragment.GameCallBack {
     public static String TAG = PlayActivity.class.getSimpleName();
 
     private AdView adViewTop;
@@ -49,6 +50,7 @@ public class PlayActivity extends AppCompatActivity {
 
     private void settingGameToPlay() {
         GameFragment gameFragment = GameFragment.newInstance(_modeSet, _timeSet);
+        gameFragment.setGameCallBack(this);
         displayFragment(gameFragment);
     }
 
@@ -58,5 +60,20 @@ public class PlayActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    @Override
+    public void onHome() {
+        Log.e(TAG, "onHome action");
+    }
+
+    @Override
+    public void onShare(GameModel game) {
+        Log.e(TAG, "onShare action");
+    }
+
+    @Override
+    public void onReplay() {
+        Log.e(TAG, "onReplay action");
     }
 }
