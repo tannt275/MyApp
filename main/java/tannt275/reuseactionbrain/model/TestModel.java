@@ -1,5 +1,7 @@
 package tannt275.reuseactionbrain.model;
 
+import android.os.AsyncTask;
+
 import java.util.Random;
 
 /**
@@ -8,11 +10,36 @@ import java.util.Random;
 public class TestModel {
 
     public static void main (String [] args){
-        Random rd = new Random();
-        int i = 0;
-        while (i < 10){
-            i ++;
-            System.out.println ("random thu "  + i + " is : " + rd.nextInt(3));
+
+    }
+    private class CountAsynTask extends AsyncTask<Integer, Void, Integer> {
+
+        private int startTime;
+
+        public CountAsynTask(int startTime) {
+            this.startTime = startTime;
+        }
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+
+            int start = params[0];
+            if (start == 0){
+                while (true){
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    start ++;
+                }
+            }
+            return start;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            super.onPostExecute(integer);
         }
     }
 }

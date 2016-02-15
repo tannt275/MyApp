@@ -24,7 +24,7 @@ import tannt275.reuseactionbrain.common.AppConfig;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int timeSet = 0;
+    private int timeSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void toPlayWithMode(int mode, int timeSet) {
+    private void toPlayWithMode(int mode, int time) {
         Intent toPlayActivity = new Intent(MainActivity.this, PlayActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt(AppConfig.MODE_IN_BUNDLE, mode);
-        bundle.putInt(AppConfig.TIME_SET, timeSet);
+        bundle.putInt(AppConfig.TIME_SET, time);
         toPlayActivity.putExtras(bundle);
         startActivity(toPlayActivity);
     }
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                          enterTime.requestFocus();
                      } else {
                          try {
-                             timeSet += Integer.parseInt(time);
+                             timeSet = Integer.parseInt(time);
                              if (timeSet > AppConfig.TIME_SET_MAX) {
                                  inputLayout.setErrorEnabled(true);
                                  inputLayout.setError(getString(R.string.dialog_time_out_bound));

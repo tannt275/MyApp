@@ -1,5 +1,6 @@
 package tannt275.reuseactionbrain.ui.fragment;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,9 @@ public class GameFragment extends Fragment {
     private int _modeGame;
     private int _timeSet;
 
+    private CountAsynTask countAsynTask;
+    private CountDownTask countDownTask;
+
     public static GameFragment newInstance(int _mode, int _timeSet) {
         GameFragment fragment = new GameFragment();
         Bundle args = new Bundle();
@@ -52,10 +56,14 @@ public class GameFragment extends Fragment {
             _timeSet = getArguments().getInt(AppConfig.TIME_SET);
             Log.e(TAG, "mode game: " + _modeGame + " time set: " + _timeSet);
 
-            if (_modeGame == AppConfig.MODE_NORMAL){
-                startCount();
-            } else if (_modeGame == AppConfig.MODE_TIME){
-                countDown();
+            if (_modeGame == AppConfig.MODE_NORMAL) {
+//                startCount();
+                countAsynTask = new CountAsynTask();
+                countAsynTask.execute();
+            } else if (_modeGame == AppConfig.MODE_TIME) {
+//                countDown();
+                countDownTask = new CountDownTask(_timeSet);
+                countDownTask.execute();
             }
         }
     }
@@ -100,7 +108,7 @@ public class GameFragment extends Fragment {
             public void run() {
                 Log.e(TAG, "time out with current game...");
 
-                AppDialogs.showDialogTimeOut(getActivity(), g);
+//                AppDialogs.showDialogTimeOut(getActivity(), g);
 
             }
         };
@@ -148,7 +156,7 @@ public class GameFragment extends Fragment {
         Log.e(TAG, "run to end game...");
     }
 
-    private void startCount() {
+    /*private void startCount() {
 
         threadCount = new Thread(new Runnable() {
             @Override
@@ -162,7 +170,7 @@ public class GameFragment extends Fragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                time.setText(AppConfig.parseIntToString(finalI ));
+                                time.setText(AppConfig.parseIntToString(finalI));
                             }
                         });
                         i++;
@@ -175,13 +183,13 @@ public class GameFragment extends Fragment {
         threadCount.start();
     }
 
-    private void countDown(){
+    private void countDown() {
 
         threadCount = new Thread(new Runnable() {
             @Override
             public void run() {
                 int i = _timeSet;
-                while ( i > 0){
+                while (i > 0) {
                     try {
                         final int finalI = i;
                         Thread.sleep(100);
@@ -191,7 +199,7 @@ public class GameFragment extends Fragment {
                                 time.setText(AppConfig.parseIntToString(finalI * 1000));
                             }
                         });
-                        i --;
+                        i--;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -199,5 +207,89 @@ public class GameFragment extends Fragment {
             }
         });
         threadCount.start();
+    }*/
+
+    private class CountAsynTask extends AsyncTask<String, String, String> {
+
+//        private int startTime;
+        private String reStr;
+
+        /*public CountAsynTask(int startTime) {
+            this.startTime = startTime;
+        }*/
+
+        @Override
+        protected String doInBackground(String... params) {
+            int i = 0;
+            while (true){
+                try {
+                    Thread.sleep(100);
+                    i ++;
+                    reStr = String.valueOf(i * 100) + "";
+                    publishProgress(reStr);
+
+                    if (isCancelled())
+                        break;
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    reStr = e.getMessage();
+                }
+            }
+            return reStr;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            time.setText(values[0]);
+        }
+    }
+
+    private class CountDownTask extends AsyncTask<String, String, String>{
+        private int timeCountDown;
+        private String reStr;
+
+        public CountDownTask(int timeCountDown) {
+            this.timeCountDown = timeCountDown;
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            if (timeCountDown <= 0)
+                reStr = "";
+            int i = timeCountDown * 10;
+            do {
+                try {
+                    Thread.sleep(100);
+                    i --;
+                    reStr = String.valueOf(i * 100) + "";
+                    publishProgress(reStr);
+
+                    if (isCancelled())
+                        break;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    reStr = e.getMessage();
+                }
+            } while ( i > 0);
+            return reStr;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            time.setText(values[0]);
+        }
     }
 }
