@@ -1,7 +1,9 @@
 package tannt275.reuseactionbrain.ui;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +22,7 @@ import android.widget.LinearLayout;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.dialog.PopUpDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -36,16 +39,38 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.main_highScore).setOnClickListener(highScoreListener);
         findViewById(R.id.main_timedMode).setOnClickListener(timedModeListener);
         findViewById(R.id.main_normalMode).setOnClickListener(normalModeListener);
+        findViewById(R.id.main_rateApp).setOnClickListener(rateAppListener);
 
     }
+
+    private View.OnClickListener rateAppListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+            // To count with Play market backstack, After pressing back button,
+            // to taken back to our application, we need to add following flags to intent.
+            goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
+                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            try {
+                startActivity(goToMarket);
+            } catch (ActivityNotFoundException e) {
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+            }
+        }
+    };
 
     private View.OnClickListener highScoreListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             //show high score
-            Intent toHighScore = new Intent(MainActivity.this, HighScoreActivity.class);
+           /* Intent toHighScore = new Intent(MainActivity.this, HighScoreActivity.class);
             toHighScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(toHighScore);
+            startActivity(toHighScore);*/
+            PopUpDialog popUpDialog = new PopUpDialog();
+            popUpDialog.show(getSupportFragmentManager(), "Share");
         }
     };
     private View.OnClickListener timedModeListener = new View.OnClickListener() {
@@ -94,40 +119,40 @@ public class MainActivity extends AppCompatActivity {
         Button cancelBtn = (Button) dialog.findViewById(R.id.dialog_cancelBtn);
 
         enterTime.addTextChangedListener(new TextWatcher() {
-                 @Override
-                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                             @Override
+                                             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                 }
+                                             }
 
-                 @Override
-                 public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                             @Override
+                                             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                 }
+                                             }
 
-                 @Override
-                 public void afterTextChanged(Editable s) {
-                     String time = enterTime.getText().toString().trim();
-                     if (TextUtils.isEmpty(time)) {
-                         inputLayout.setErrorEnabled(true);
-                         inputLayout.setError(getString(R.string.dialog_time_empty));
-                         enterTime.requestFocus();
-                     } else {
-                         try {
-                             timeSet = Integer.parseInt(time);
-                             if (timeSet > AppConfig.TIME_SET_MAX) {
-                                 inputLayout.setErrorEnabled(true);
-                                 inputLayout.setError(getString(R.string.dialog_time_out_bound));
-                                 enterTime.setText("");
-                                 enterTime.requestFocus();
-                             } else {
-                                 inputLayout.setErrorEnabled(false);
-                             }
-                         } catch (Exception e) {
-                             e.printStackTrace();
-                         }
-                     }
-                 }
-             }
+                                             @Override
+                                             public void afterTextChanged(Editable s) {
+                                                 String time = enterTime.getText().toString().trim();
+                                                 if (TextUtils.isEmpty(time)) {
+                                                     inputLayout.setErrorEnabled(true);
+                                                     inputLayout.setError(getString(R.string.dialog_time_empty));
+                                                     enterTime.requestFocus();
+                                                 } else {
+                                                     try {
+                                                         timeSet = Integer.parseInt(time);
+                                                         if (timeSet > AppConfig.TIME_SET_MAX) {
+                                                             inputLayout.setErrorEnabled(true);
+                                                             inputLayout.setError(getString(R.string.dialog_time_out_bound));
+                                                             enterTime.setText("");
+                                                             enterTime.requestFocus();
+                                                         } else {
+                                                             inputLayout.setErrorEnabled(false);
+                                                         }
+                                                     } catch (Exception e) {
+                                                         e.printStackTrace();
+                                                     }
+                                                 }
+                                             }
+                                         }
 
         );
         acceptBtn.setOnClickListener(new View.OnClickListener() {

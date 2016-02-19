@@ -14,8 +14,10 @@ import android.widget.TextView;
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.control.RandomGame;
+import tannt275.reuseactionbrain.database.DataBaseHandle;
 import tannt275.reuseactionbrain.dialog.AppDialogs;
 import tannt275.reuseactionbrain.model.GameModel;
+import tannt275.reuseactionbrain.model.MLeaderBoard;
 
 public class GameFragment extends Fragment {
 
@@ -39,6 +41,8 @@ public class GameFragment extends Fragment {
     private CountDownTask countDownTask;
 
     private GameCallBack gameCallBack;
+
+    private DataBaseHandle dataBaseHandle;
 
     public GameCallBack getGameCallBack() {
         return gameCallBack;
@@ -66,11 +70,9 @@ public class GameFragment extends Fragment {
             Log.e(TAG, "mode game: " + _modeGame + " time set: " + _timeSet);
 
             if (_modeGame == AppConfig.MODE_NORMAL) {
-//                startCount();
                 countAsynTask = new CountAsynTask();
                 countAsynTask.execute();
             } else if (_modeGame == AppConfig.MODE_TIME) {
-//                countDown();
                 countDownTask = new CountDownTask(_timeSet);
                 countDownTask.execute();
             }
@@ -89,6 +91,7 @@ public class GameFragment extends Fragment {
         operator = (TextView) rootView.findViewById(R.id.game_operator);
         result = (TextView) rootView.findViewById(R.id.game_result);
 
+        dataBaseHandle = new DataBaseHandle(getActivity());
         imbCorrect.setOnClickListener(answerCorrectListener);
         imbWrong.setOnClickListener(answerWrongListener);
         initAllView();
@@ -119,7 +122,11 @@ public class GameFragment extends Fragment {
                 endGame();
             }
         };
-        handler.postDelayed(runnable, TIMEOUT_GAME);
+        if (_modeGame == AppConfig.MODE_NORMAL){
+            handler.postDelayed(runnable, TIMEOUT_GAME);
+        } else {
+            handler.postDelayed(runnable, _timeSet * 1000);
+        }
     }
 
     private View.OnClickListener answerCorrectListener = new View.OnClickListener() {
@@ -160,28 +167,50 @@ public class GameFragment extends Fragment {
     }
 
     private void endGame() {
-        Log.e(TAG, "run to end game...");
-//        AppDialogs.showDialogTimeOut(getActivity(), gameModel);
-        AppDialogs.DialogCallBack callBack = new AppDialogs.DialogCallBack() {
+
+        _score = 0;
+        if (countDownTask != null)
+            countDownTask.cancel(true);
+        if (countAsynTask != null)
+            countAsynTask.cancel(true);
+
+        MLeaderBoard mLeaderBoard = new MLeaderBoard();
+        mLeaderBoard.set_type(_modeGame);
+        mLeaderBoard.set_time(Long.valueOf(time.getText().toString()));
+        mLeaderBoard.set_score(gameModel.get_score());
+
+        DataBaseHandle.DataBaseCallback callback = new DataBaseHandle.DataBaseCallback() {
             @Override
-            public void onHome() {
-                if (gameCallBack != null)
-                gameCallBack.onHome();
+            public void onSuccess() {
+                AppDialogs.DialogCallBack callBack = new AppDialogs.DialogCallBack() {
+                    @Override
+                    public void onHome() {
+                        if (gameCallBack != null)
+                            gameCallBack.onHome();
+                    }
+
+                    @Override
+                    public void onShare(GameModel gameModel) {
+                        if (gameCallBack != null)
+                            gameCallBack.onShare(gameModel);
+                    }
+
+                    @Override
+                    public void onReplay() {
+                        if (gameCallBack != null)
+                            gameCallBack.onReplay();
+                    }
+                };
+                AppDialogs.showDialogTimeOut(getActivity(), gameModel, callBack);
             }
 
             @Override
-            public void onShare(GameModel gameModel) {
-                if (gameCallBack != null)
-                    gameCallBack.onShare(gameModel);
-            }
-
-            @Override
-            public void onReplay() {
-                if (gameCallBack != null)
-                    gameCallBack.onReplay();
+            public void onFail() {
+                Log.e(TAG, "incase is error...");
             }
         };
-        AppDialogs.showDialogTimeOut(getActivity(), gameModel, callBack);
+        dataBaseHandle.insertData(mLeaderBoard, callback);
+
     }
 
     private class CountAsynTask extends AsyncTask<String, String, String> {
@@ -265,7 +294,9 @@ public class GameFragment extends Fragment {
 
     public interface GameCallBack {
         public void onHome();
+
         public void onShare(GameModel game);
+
         public void onReplay();
     }
 }

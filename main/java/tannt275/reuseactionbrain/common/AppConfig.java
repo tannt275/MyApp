@@ -14,17 +14,30 @@ public class AppConfig {
     public static int MODE_NORMAL = 998;
 
     public static String MODE_TIME_TITLE = "Time Mode";
-    public static String MODE_NORMAL_TIME = "Normal Mode";
+    public static String MODE_NORMAL_TITLE = "Normal Mode";
 
-    public static String parseIntToString (int d){
-        String str ;
-        if ( d < 0 )
+    public static int CONDITION_BE_LEADERBOARD = 10;
+    public static int SIZE_LEADERBOARD = 10;
+
+    public static String parseTimeToString(long d) {
+        String str;
+        if (d < 0)
             return "";
         else {
-            int s = d / 1000;
-            int mls = d - s * 1000;
-            str = String.format( "%1$s : %2$s", s, mls);
+            long s = d / 1000;
+            long mls = d - s * 1000;
+            String first = "";
+            String second = "";
+            if (s < 10)
+                first = "00" + String.valueOf(s);
+            else if (s < 100)
+                first = "0" + String.valueOf(s);
+            if (mls == 0)
+                second = "000";
+            else second = String.valueOf(mls);
+                str = String.format("%1$s : %2$s", first, second);
             return str;
         }
     }
+
 }

@@ -2,15 +2,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="tannt275.reuseactionbrain.ui.HighScoreActivity$PlaceholderFragment">
-
     <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
+        android:padding="5dp"
+        android:text="@string/empty_high_score"
+        android:visibility="gone"
+        android:id="@+id/empty_high_score"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ListView
+        android:visibility="visible"
+        android:id="@+id/listHighScore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/colorPrimary"
+        android:dividerHeight="2dp"
+        android:scrollbars="none"/>
 
 </RelativeLayout>

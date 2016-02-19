@@ -17,20 +17,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.adapter.HighScoreAdapter;
+import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.database.DataBaseHandle;
+import tannt275.reuseactionbrain.model.MLeaderBoard;
 
 public class HighScoreActivity extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
@@ -56,33 +55,19 @@ public class HighScoreActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_high_score, menu);
-        return true;
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -90,23 +75,19 @@ public class HighScoreActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
     public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
+
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private TextView emptyHighScore;
+        private ListView listHighScore;
+        private int type;
+        private List<MLeaderBoard> leaderBoardList;
+        private DataBaseHandle dataBaseHandle;
+        private HighScoreAdapter highScoreAdapter;
 
         public PlaceholderFragment() {
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -116,19 +97,33 @@ public class HighScoreActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            dataBaseHandle = new DataBaseHandle(getActivity());
+            if (getArguments() != null)
+                type = getArguments().getInt(ARG_SECTION_NUMBER);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_high_score, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            listHighScore = (ListView) rootView.findViewById(R.id.listHighScore);
+            emptyHighScore = (TextView) rootView.findViewById(R.id.empty_high_score);
+            fillData();
             return rootView;
+        }
+
+        private void fillData() {
+            if (type == 0)
+                leaderBoardList = dataBaseHandle.getAllLeaderBoardWithType(AppConfig.MODE_NORMAL);
+            else if (type == 1)
+                leaderBoardList = dataBaseHandle.getAllLeaderBoardWithType(AppConfig.MODE_TIME);
+            emptyHighScore.setVisibility(leaderBoardList.size() == 0 ? View.VISIBLE : View.GONE);
+            highScoreAdapter = new HighScoreAdapter(getActivity(), leaderBoardList);
+            listHighScore.setAdapter(highScoreAdapter);
         }
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -137,26 +132,21 @@ public class HighScoreActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return AppConfig.MODE_NORMAL_TITLE;
                 case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
+                    return AppConfig.MODE_TIME_TITLE;
             }
             return null;
         }

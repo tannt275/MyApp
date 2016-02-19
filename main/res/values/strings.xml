@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">ReuseActionBrain</string>
+    <string name="app_name">ActionBrain</string>
+    <string name="facebook_app_id">1554817301495198</string>
 
     <string name="descriptionMe">Powered by Sir[Un]</string>
     <string name="main_high_score">High Score</string>
     <string name="main_normal_mode">Normal Mode</string>
     <string name="main_timed_mode">Time Mode</string>
+    <string name="main_rate_app">RateApp</string>
 
     <!--for admods-->
     <string name="play_bottom_banner_id">ca-app-pub-4079505062217481/3399497657</string>
     <string name="play_top_banner_id">ca-app-pub-4079505062217481/5790900854</string>
 
-    <string name="title_activity_high_score">HighScoreActivity</string>
+    <string name="title_activity_high_score">HighScore</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="action_settings">Settings</string>
 
@@ -21,5 +23,11 @@
     <string name="dialog_time_edt">Enter time here</string>
     <string name="dialog_time_empty">Time is empty</string>
     <string name="dialog_time_out_bound">Time have to be smaller 100</string>
+    <string name="empty_high_score">There is no high score in data. Play game !</string>
 
+    <!--for share-->
+    <string name="share_mode"> Mode: %1$s</string>
+    <string name="share_new_score"> NewScore: %1$s</string>
+    <string name="share_best_score"> BestScore: %1$s</string>
+    <string name="app_icon">App Icon</string>
 </resources>

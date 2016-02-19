@@ -1,5 +1,6 @@
 package tannt275.reuseactionbrain.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import com.google.android.gms.ads.AdView;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.dialog.AppDialogs;
 import tannt275.reuseactionbrain.model.GameModel;
 import tannt275.reuseactionbrain.ui.fragment.GameFragment;
 
@@ -65,15 +67,19 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
     @Override
     public void onHome() {
         Log.e(TAG, "onHome action");
+        Intent toHomeActivity = new Intent(PlayActivity.this, MainActivity.class);
+        startActivity(toHomeActivity);
     }
 
     @Override
     public void onShare(GameModel game) {
         Log.e(TAG, "onShare action");
+//        AppDialogs.showShareImage(PlayActivity.this,game);
     }
 
     @Override
     public void onReplay() {
         Log.e(TAG, "onReplay action");
+        settingGameToPlay();
     }
 }
