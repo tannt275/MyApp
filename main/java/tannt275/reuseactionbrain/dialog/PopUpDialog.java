@@ -27,7 +27,6 @@ public class PopUpDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.test_popup, container, false);
         shareInformation = (ShareInformation) rootView.findViewById(R.id.shareInfomation);
-//        shareInformation.prepareDrawing();
         fillData();
         return rootView;
     }
