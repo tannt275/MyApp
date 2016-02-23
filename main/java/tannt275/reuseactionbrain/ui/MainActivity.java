@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                                                          if (timeSet > AppConfig.TIME_SET_MAX) {
                                                              inputLayout.setErrorEnabled(true);
                                                              inputLayout.setError(getString(R.string.dialog_time_out_bound));
-                                                             enterTime.setText("");
                                                              enterTime.requestFocus();
                                                          } else {
                                                              inputLayout.setErrorEnabled(false);
