@@ -30,4 +30,9 @@
     <string name="share_new_score"> NewScore: %1$s</string>
     <string name="share_best_score"> BestScore: %1$s</string>
     <string name="app_icon">App Icon</string>
+
+
+    <string name="dialog_add_name_title">Be LeaderBoard</string>
+    <string name="dialog_add_name_message"> Your achievement is in High Score. Enter %1$s to add Leaderboard</string>
+    <string name="dialog_add_name_hint">Enter your name</string>
 </resources>

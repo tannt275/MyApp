@@ -1,5 +1,15 @@
 package tannt275.reuseactionbrain.common;
 
+import android.content.Context;
+import android.util.Log;
+
+import java.awt.font.TextAttribute;
+import java.util.List;
+
+import tannt275.reuseactionbrain.database.DataBaseHandle;
+import tannt275.reuseactionbrain.model.GameModel;
+import tannt275.reuseactionbrain.model.MLeaderBoard;
+
 /**
  * Created by tannt on 2/3/2016.
  */
@@ -35,9 +45,25 @@ public class AppConfig {
             if (mls == 0)
                 second = "000";
             else second = String.valueOf(mls);
-                str = String.format("%1$s : %2$s", first, second);
+            str = String.format("%1$s : %2$s", first, second);
             return str;
         }
+    }
+
+    public static boolean isLeaderBoard(GameModel gameModel, Context context) {
+        DataBaseHandle dataBaseHandle = new DataBaseHandle(context);
+        List<MLeaderBoard> mLeaderBoardList = dataBaseHandle.getAllLeaderBoardWithType(gameModel.get_mode());
+        if (mLeaderBoardList.size() < 9 && gameModel.get_score() > AppConfig.CONDITION_BE_LEADERBOARD)
+            return true;
+        else {
+            for (MLeaderBoard mLeaderBoard : mLeaderBoardList) {
+                Log.e("Appconfig", "leaderboard: " + mLeaderBoard.convertToString());
+                if (mLeaderBoard.get_score() < gameModel.get_score()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

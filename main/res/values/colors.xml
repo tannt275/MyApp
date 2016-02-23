@@ -5,4 +5,5 @@
     <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorAccent">@android:color/white</color>
     <color name="dialog_background_aqua">#2E9AFE</color>
+    <color name="colorRed">#FF0000</color>
 </resources>

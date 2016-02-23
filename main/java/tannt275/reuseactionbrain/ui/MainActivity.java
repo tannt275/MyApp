@@ -66,11 +66,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             //show high score
-           /* Intent toHighScore = new Intent(MainActivity.this, HighScoreActivity.class);
+            Intent toHighScore = new Intent(MainActivity.this, HighScoreActivity.class);
             toHighScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            startActivity(toHighScore);*/
-            PopUpDialog popUpDialog = new PopUpDialog();
-            popUpDialog.show(getSupportFragmentManager(), "Share");
+            startActivity(toHighScore);
+            /*PopUpDialog popUpDialog = new PopUpDialog();
+            popUpDialog.show(getSupportFragmentManager(), "Share");*/
         }
     };
     private View.OnClickListener timedModeListener = new View.OnClickListener() {

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,13 +119,12 @@ public class GameFragment extends Fragment {
         runnable = new Runnable() {
             @Override
             public void run() {
-                Log.e(TAG, "time out with current game...");
                 endGame();
             }
         };
-        if (_modeGame == AppConfig.MODE_NORMAL){
+        if (_modeGame == AppConfig.MODE_NORMAL) {
             handler.postDelayed(runnable, TIMEOUT_GAME);
-        } else {
+        } else if (_modeGame == AppConfig.MODE_TIME) {
             handler.postDelayed(runnable, _timeSet * 1000);
         }
     }
@@ -133,7 +133,9 @@ public class GameFragment extends Fragment {
         @Override
         public void onClick(View v) {
             Log.e(TAG, "button correct was clicked...");
-            handler.removeCallbacks(runnable);
+            if (_modeGame == AppConfig.MODE_NORMAL) {
+                handler.removeCallbacks(runnable);
+            }
             if (gameModel.is_isCorrect()) {
                 Log.e(TAG, "user and me with same answer...");
                 nextGame();
@@ -147,8 +149,10 @@ public class GameFragment extends Fragment {
     private View.OnClickListener answerWrongListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            handler.removeCallbacks(runnable);
             Log.e(TAG, "button wrong was clicked...");
+            if (_modeGame == AppConfig.MODE_NORMAL) {
+                handler.removeCallbacks(runnable);
+            }
             if (gameModel.is_isCorrect()) {
                 Log.e(TAG, "user and me with not same answer...");
                 endGame();
@@ -166,18 +170,40 @@ public class GameFragment extends Fragment {
         updateUi(gameModel);
     }
 
+    /**
+     *
+     */
     private void endGame() {
-
         _score = 0;
+        handler = null;
         if (countDownTask != null)
             countDownTask.cancel(true);
         if (countAsynTask != null)
             countAsynTask.cancel(true);
-
-        MLeaderBoard mLeaderBoard = new MLeaderBoard();
+        final MLeaderBoard mLeaderBoard = new MLeaderBoard();
         mLeaderBoard.set_type(_modeGame);
         mLeaderBoard.set_time(Long.valueOf(time.getText().toString()));
         mLeaderBoard.set_score(gameModel.get_score());
+        if (AppConfig.isLeaderBoard(gameModel, getActivity())) {
+            AppDialogs.DialogSingleCallBack singleCallBack = new AppDialogs.DialogSingleCallBack() {
+                @Override
+                public void onCallBack(String string) {
+                    mLeaderBoard.set_name(string);
+                    showDialogEndGame(mLeaderBoard);
+                }
+            };
+            AppDialogs.showDialogAddName(getActivity(), singleCallBack);
+        } else {
+            showDialogEndGame(mLeaderBoard);
+        }
+
+        Log.e(TAG, "mLeaderboard: " + mLeaderBoard.convertToString());
+    }
+
+    /**
+     * @param mLeaderBoard
+     */
+    private void showDialogEndGame(MLeaderBoard mLeaderBoard) {
 
         DataBaseHandle.DataBaseCallback callback = new DataBaseHandle.DataBaseCallback() {
             @Override
@@ -210,7 +236,6 @@ public class GameFragment extends Fragment {
             }
         };
         dataBaseHandle.insertData(mLeaderBoard, callback);
-
     }
 
     private class CountAsynTask extends AsyncTask<String, String, String> {

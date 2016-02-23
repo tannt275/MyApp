@@ -2,30 +2,22 @@ package tannt275.reuseactionbrain.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.database.DataBaseHandle;
-import tannt275.reuseactionbrain.model.DrawerView;
 import tannt275.reuseactionbrain.model.GameModel;
-import tannt275.reuseactionbrain.model.MLeaderBoard;
 
 /**
  * Created by tannt on 2/3/2016.
@@ -85,14 +77,60 @@ public class AppDialogs {
         dialog.show();
     }
 
-    public static boolean beLeaderBoard(GameModel gameModel, DataBaseHandle dataBaseHandle){
-        List<MLeaderBoard> leaderBoardList = dataBaseHandle.getAllLeaderBoardWithType(gameModel.get_mode());
-        for (MLeaderBoard mLeaderBoard : leaderBoardList){
-            if (gameModel.get_score() >= mLeaderBoard.get_score())
-                return true;
-        }
-        return false;
+    public static void showDialogAddName(Context context,  final DialogSingleCallBack callBack) {
+        final Dialog dialog = new Dialog(context);
+        dialog.setCancelable(false);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_name);
+
+        TextView messageTv = (TextView) dialog.findViewById(R.id.dialog_add_name_message);
+        Button btnAgree = (Button) dialog.findViewById(R.id.dialog_add_name_agreeBtn);
+        Button btnCancel = (Button) dialog.findViewById(R.id.dialog_add_name_cancelBtn);
+        final EditText nameEdt = (EditText) dialog.findViewById(R.id.dialog_add_nameEdt);
+
+        String mess = "Your Name";
+        String message = String.format(context.getString(R.string.dialog_add_name_message), mess);
+        Spannable spannable = new SpannableString(message);
+        spannable.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorRed)),
+                message.indexOf(mess), mess.length() + message.indexOf(mess), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        spannable.setSpan(new RelativeSizeSpan(1.5f),message.indexOf(mess), mess.length() + message.indexOf(mess), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        messageTv.setText(spannable);
+
+        nameEdt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.setFocusable(true);
+                v.setFocusableInTouchMode(true);
+                return false;
+            }
+        });
+        btnAgree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callBack != null){
+                    dialog.dismiss();
+                    callBack.onCallBack(nameEdt.getText().toString());
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callBack !=null){
+
+                    dialog.dismiss();
+                    callBack.onCallBack(nameEdt.getText().toString());
+                }
+            }
+        });
+        dialog.show();
     }
+
+    public interface DialogSingleCallBack {
+        public void onCallBack(String string);
+    }
+
 
     public interface DialogCallBack {
         public void onHome();
