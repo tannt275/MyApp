@@ -1,21 +1,38 @@
 package tannt275.reuseactionbrain.ui;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
-import tannt275.reuseactionbrain.dialog.AppDialogs;
 import tannt275.reuseactionbrain.model.GameModel;
 import tannt275.reuseactionbrain.ui.fragment.GameFragment;
+import tannt275.reuseactionbrain.widget.ShareInformation;
 
 public class PlayActivity extends AppCompatActivity implements GameFragment.GameCallBack {
     public static String TAG = PlayActivity.class.getSimpleName();
@@ -28,12 +45,21 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
     private int _modeSet;
     private int _timeSet;
 
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+
+
+    private Uri bitmapUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             _modeSet = bundle.getInt(AppConfig.MODE_IN_BUNDLE);
             _timeSet = bundle.getInt(AppConfig.TIME_SET);
             Log.e(TAG, "mode game: " + _modeSet + " time set = " + _timeSet);
@@ -56,7 +82,7 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
         displayFragment(gameFragment);
     }
 
-    private void displayFragment(Fragment fragment){
+    private void displayFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.play_container, fragment);
         fragmentTransaction.addToBackStack(null);
@@ -74,7 +100,41 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
     @Override
     public void onShare(GameModel game) {
         Log.e(TAG, "onShare action");
-//        AppDialogs.showShareImage(PlayActivity.this,game);
+//        shareOnFacebook(game);
+        Bitmap bitmapAvatar = BitmapFactory.decodeResource(getResources(), R.mipmap.app_launcher);
+        ShareInformation shareInformation = new ShareInformation(this);
+        shareInformation.drawAvatar(bitmapAvatar);
+        shareInformation.drawAppName();
+        shareInformation.drawerContent(game);
+
+        Bitmap inFoBitmap = shareInformation.getBitmap();
+
+        SharePhoto sharePhoto = new SharePhoto.Builder()
+                .setBitmap(inFoBitmap)
+                .build();
+        SharePhotoContent sharePhotoContent =  new SharePhotoContent.Builder()
+                .addPhoto(sharePhoto)
+                .build();
+        if (shareDialog.canShow(SharePhotoContent.class)){
+            shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+                @Override
+                public void onSuccess(Sharer.Result result) {
+                    Log.e(TAG, "onSuccess");
+                }
+
+                @Override
+                public void onCancel() {
+                    Log.e(TAG, "onCancel");
+                }
+
+                @Override
+                public void onError(FacebookException error) {
+                    Log.e(TAG, "onError");
+                }
+            });
+            shareDialog.show(sharePhotoContent);
+        }
+
     }
 
     @Override
@@ -82,4 +142,11 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
         Log.e(TAG, "onReplay action");
         settingGameToPlay();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

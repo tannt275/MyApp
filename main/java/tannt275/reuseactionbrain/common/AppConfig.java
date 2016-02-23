@@ -50,6 +50,18 @@ public class AppConfig {
         }
     }
 
+    public static String parseToSecond(long d){
+        String str = "";
+        if (d < 0)
+            str = "";
+        else {
+            long s = d /1000;
+            long mls = d - s*1000;
+            str = String.valueOf(s) + "," + String.valueOf(mls);
+        }
+        return str;
+    }
+
     public static boolean isLeaderBoard(GameModel gameModel, Context context) {
         DataBaseHandle dataBaseHandle = new DataBaseHandle(context);
         List<MLeaderBoard> mLeaderBoardList = dataBaseHandle.getAllLeaderBoardWithType(gameModel.get_mode());

@@ -14,6 +14,15 @@ public class GameModel extends BaseModel {
     private boolean _isCorrect;
     private String _operator;
     private int _mode;
+    private long _time;
+
+    public long get_time() {
+        return _time;
+    }
+
+    public void set_time(long _time) {
+        this._time = _time;
+    }
 
     public int get_mode() {
         return _mode;

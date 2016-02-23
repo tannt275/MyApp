@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import java.awt.font.TextAttribute;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.model.GameModel;
 
 /**
  * Created by tannt on 2/18/2016.
@@ -25,7 +27,7 @@ public class ShareInformation extends View {
 
     public static String TAG = ShareInformation.class.getSimpleName();
 
-    public static final int BITMAP_W = 1200;
+    public static final int BITMAP_W = 400;
     public static final int BITMAP_H = 600;
 
     private Context context;
@@ -40,6 +42,10 @@ public class ShareInformation extends View {
     private int userNameInY;
     private int modeGameInY;
     private int scoreInY;
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
     public ShareInformation(Context context) {
         super(context);
@@ -66,19 +72,19 @@ public class ShareInformation extends View {
 
     public void drawAvatar(Bitmap avatar) {
 
-        int avatar_size = (int) (widthScreen / 3.0f);
+//        int avatar_size = (int) (widthScreen / 1.5f);
         canvas.translate(10, 10);
 
         // Draw avatar
         if (avatar != null) {
             ImageView avatarView = new ImageView(context);
-            avatarView.setLayoutParams(new ViewGroup.LayoutParams(avatar_size, avatar_size));
+            avatarView.setLayoutParams(new ViewGroup.LayoutParams(400, 600));
             avatarView.setImageBitmap(avatar);
             avatarView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             avatarView.measure(
-                    MeasureSpec.makeMeasureSpec(avatar_size, MeasureSpec.EXACTLY),
-                    MeasureSpec.makeMeasureSpec(avatar_size, MeasureSpec.EXACTLY));
-            avatarView.layout(0, 0, avatar_size, avatar_size);
+                    MeasureSpec.makeMeasureSpec(400, MeasureSpec.EXACTLY),
+                    MeasureSpec.makeMeasureSpec(600, MeasureSpec.EXACTLY));
+            avatarView.layout(0, 0, 400, 600);
             avatarView.draw(canvas);
         }
         canvas.translate(10, 0);
@@ -89,16 +95,36 @@ public class ShareInformation extends View {
         Rect r = new Rect();
         Paint p = new Paint();
         p.setStyle(Paint.Style.FILL);
-        p.setTextSize(50f);
-        p.setColor(Color.BLUE);
+        p.setTextSize(40f);
+        p.setColor(Color.WHITE);
+        p.setUnderlineText(true);
         p.getTextBounds(appName, 0, appName.length(), r);
-        int posX = widthScreen / 2 - r.right / 2;
-        int posY = r.height();
-        canvas.drawText(appName, posX, posY, p);
+        canvas.drawText(appName, 20, 480, p);
 
-        /*int yPos = 40;
-        int xPos = (widthScreen - r.right)/2;
-        canvas.drawText(appName, xPos, yPos, p);*/
+    }
+
+    public void drawerContent(GameModel gameModel) {
+
+        String gameModeStr = "Game mode: " + (gameModel.get_mode() == 0 ? "Normal" : "Timed");
+        String gameScore = "Score: " + gameModel.get_score();
+        String gameTime = "Time: " + AppConfig.parseToSecond(gameModel.get_time()) + " s";
+
+        Rect rectGameMode = new Rect();
+        Rect rectGameScore = new Rect();
+        Rect rectGameTime = new Rect();
+
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(20f);
+        paint.setStyle(Paint.Style.FILL);
+
+        paint.getTextBounds(gameModeStr, 0, gameModeStr.length(), rectGameMode);
+        canvas.drawText(gameModeStr, 20, 510, paint);
+
+        paint.getTextBounds(gameScore, 0, gameScore.length(), rectGameScore);
+        canvas.drawText(gameScore, 20, 530, paint);
+
+        paint.getTextBounds(gameTime, 0, gameTime.length(), rectGameTime);
+        canvas.drawText(gameTime, 20, 550, paint);
     }
 
     Rect bitmapRect;

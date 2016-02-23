@@ -184,6 +184,8 @@ public class GameFragment extends Fragment {
         mLeaderBoard.set_type(_modeGame);
         mLeaderBoard.set_time(Long.valueOf(time.getText().toString()));
         mLeaderBoard.set_score(gameModel.get_score());
+
+        gameModel.set_time(Long.valueOf(time.getText().toString()));
         if (AppConfig.isLeaderBoard(gameModel, getActivity())) {
             AppDialogs.DialogSingleCallBack singleCallBack = new AppDialogs.DialogSingleCallBack() {
                 @Override
