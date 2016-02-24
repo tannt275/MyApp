@@ -68,8 +68,6 @@ public class MainActivity extends AppCompatActivity {
             Intent toHighScore = new Intent(MainActivity.this, HighScoreActivity.class);
             toHighScore.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(toHighScore);
-            /*PopUpDialog popUpDialog = new PopUpDialog();
-            popUpDialog.show(getSupportFragmentManager(), "Share");*/
         }
     };
     private View.OnClickListener timedModeListener = new View.OnClickListener() {

@@ -3,8 +3,8 @@
     package="tannt275.reuseactionbrain">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".common.MyApplication"
@@ -16,8 +16,7 @@
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ui.PlayActivity" />
         <activity
             android:name=".ui.HighScoreActivity"
@@ -37,9 +36,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1554817301495198"
+
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider1554817301495198"
+            android:exported="true" />
+
+        <activity
+            android:name=".ui.TutorialActivity"
+            android:label="@string/title_activity_tutorial"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

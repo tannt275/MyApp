@@ -36,5 +36,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/shape_number_box</item>
     </style>
+    <style name="ButtonTutorial">
+        <item name="android:background">@drawable/selector_button_tutorial</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>
