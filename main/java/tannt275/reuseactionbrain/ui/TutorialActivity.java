@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.ui.fragment.tutorial.FirstFragment;
+import tannt275.reuseactionbrain.ui.fragment.tutorial.SecondFragment;
 
 public class TutorialActivity extends AppCompatActivity {
 
@@ -25,8 +26,11 @@ public class TutorialActivity extends AppCompatActivity {
         position = (TextView) findViewById(R.id.tutorial_position);
         bottomBtn = (Button) findViewById(R.id.tutorial_button);
 
-        FirstFragment firstFragment = new FirstFragment();
-        displayFragment(firstFragment);
+        /*FirstFragment firstFragment = new FirstFragment();
+        displayFragment(firstFragment);*/
+
+        SecondFragment secondFragment = new SecondFragment();
+        displayFragment(secondFragment);
     }
 
     private void displayFragment(Fragment fragment){

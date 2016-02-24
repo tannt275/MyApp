@@ -15,7 +15,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginRight="7dp"
-        android:text="9"
+        android:text="1"
         android:textSize="25sp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginRight="7dp"
-        android:text="9"
+        android:text="1"
         android:textSize="25sp" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:id="@+id/game_result"
         style="@style/GameBox"
         android:background="@drawable/shape_number_box_result"
-        android:text="9"
+        android:text="1"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 

@@ -34,4 +34,8 @@
     <string name="dialog_add_name_message"> Your achievement is in High Score. Enter %1$s to add Leaderboard</string>
     <string name="dialog_add_name_hint">Enter your name</string>
     <string name="title_activity_tutorial">TutorialActivity</string>
+
+    <string name="popup_title_wrong">Click here if the Operator Wrong</string>
+    <string name="popup_title_right">Click here if the Operator Right</string>
+    <string name="popup_title_operator">This is an operator, that was generated random. Maybe it is Right or Wrong</string>
 </resources>
