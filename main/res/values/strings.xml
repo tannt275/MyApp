@@ -42,4 +42,5 @@
     <string name="popup_title_bottom">This is Timed Mode game. In this mode, time will be set before you play. When time end, the game will over.</string>
 
     <string name="finish_tutorial">We are completed this guide.\n Let\'s start</string>
+    <string name="start_tutorial">We will take a guide.\n Are you OK?</string>
 </resources>
