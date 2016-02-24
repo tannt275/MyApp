@@ -38,4 +38,8 @@
     <string name="popup_title_wrong">Click here if the Operator Wrong</string>
     <string name="popup_title_right">Click here if the Operator Right</string>
     <string name="popup_title_operator">This is an operator, that was generated random. Maybe it is Right or Wrong</string>
+    <string name="popup_title_top">This is Normal Mode game. In this mode, time will increase until game over</string>
+    <string name="popup_title_bottom">This is Timed Mode game. In this mode, time will be set before you play. When time end, the game will over.</string>
+
+    <string name="finish_tutorial">We are completed this guide.\n Let\'s start</string>
 </resources>
