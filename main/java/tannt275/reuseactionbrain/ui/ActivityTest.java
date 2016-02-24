@@ -6,13 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.common.Log;
 
 public class ActivityTest extends AppCompatActivity {
 

@@ -53,7 +53,6 @@ public class AppDialogs {
             public void onClick(View v) {
                 if (callBack != null)
                     callBack.onShare(gameModel);
-                dialog.dismiss();
             }
         });
 

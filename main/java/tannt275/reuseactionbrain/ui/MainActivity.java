@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
-import tannt275.reuseactionbrain.dialog.PopUpDialog;
 
 
 public class MainActivity extends AppCompatActivity {

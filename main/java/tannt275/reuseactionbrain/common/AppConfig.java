@@ -1,9 +1,7 @@
 package tannt275.reuseactionbrain.common;
 
 import android.content.Context;
-import android.util.Log;
 
-import java.awt.font.TextAttribute;
 import java.util.List;
 
 import tannt275.reuseactionbrain.database.DataBaseHandle;
@@ -28,6 +26,8 @@ public class AppConfig {
 
     public static int CONDITION_BE_LEADERBOARD = 10;
     public static int SIZE_LEADERBOARD = 10;
+
+    public static boolean IS_DEV_MODE = true;
 
     public static String parseTimeToString(long d) {
         String str;
@@ -69,7 +69,7 @@ public class AppConfig {
             return true;
         else {
             for (MLeaderBoard mLeaderBoard : mLeaderBoardList) {
-                Log.e("Appconfig", "leaderboard: " + mLeaderBoard.convertToString());
+                Log.d(TAG, "leader board: "+ mLeaderBoard.convertToString());
                 if (mLeaderBoard.get_score() < gameModel.get_score()) {
                     return true;
                 }

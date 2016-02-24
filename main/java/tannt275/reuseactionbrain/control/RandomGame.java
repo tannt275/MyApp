@@ -1,11 +1,10 @@
 package tannt275.reuseactionbrain.control;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import tannt275.reuseactionbrain.common.Log;
 import tannt275.reuseactionbrain.model.GameModel;
 
 /**

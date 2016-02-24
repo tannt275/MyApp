@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,7 @@ import android.widget.TextView;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.common.Log;
 import tannt275.reuseactionbrain.control.RandomGame;
 import tannt275.reuseactionbrain.database.DataBaseHandle;
 import tannt275.reuseactionbrain.dialog.AppDialogs;
@@ -182,10 +181,16 @@ public class GameFragment extends Fragment {
             countAsynTask.cancel(true);
         final MLeaderBoard mLeaderBoard = new MLeaderBoard();
         mLeaderBoard.set_type(_modeGame);
-        mLeaderBoard.set_time(Long.valueOf(time.getText().toString()));
         mLeaderBoard.set_score(gameModel.get_score());
+        long timePlay = 0;
+        if (_modeGame == AppConfig.MODE_NORMAL){
+           timePlay = Long.parseLong(time.getText().toString());
+        } else if (_modeGame == AppConfig.MODE_TIME){
+            timePlay = _timeSet * 1000 - Long.valueOf(time.getText().toString());
+        }
+        mLeaderBoard.set_time(timePlay);
+        gameModel.set_time(timePlay);
 
-        gameModel.set_time(Long.valueOf(time.getText().toString()));
         if (AppConfig.isLeaderBoard(gameModel, getActivity())) {
             AppDialogs.DialogSingleCallBack singleCallBack = new AppDialogs.DialogSingleCallBack() {
                 @Override
@@ -199,7 +204,6 @@ public class GameFragment extends Fragment {
             showDialogEndGame(mLeaderBoard);
         }
 
-        Log.e(TAG, "mLeaderboard: " + mLeaderBoard.convertToString());
     }
 
     /**
