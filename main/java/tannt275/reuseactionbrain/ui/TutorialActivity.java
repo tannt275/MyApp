@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.ui.fragment.tutorial.FirstFragment;
 
 public class TutorialActivity extends AppCompatActivity {
 
@@ -23,6 +24,9 @@ public class TutorialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutorial);
         position = (TextView) findViewById(R.id.tutorial_position);
         bottomBtn = (Button) findViewById(R.id.tutorial_button);
+
+        FirstFragment firstFragment = new FirstFragment();
+        displayFragment(firstFragment);
     }
 
     private void displayFragment(Fragment fragment){
