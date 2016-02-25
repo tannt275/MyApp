@@ -1,6 +1,7 @@
 package tannt275.reuseactionbrain.common;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.facebook.FacebookSdk;
 
@@ -9,9 +10,16 @@ import com.facebook.FacebookSdk;
  */
 public class MyApplication extends Application {
 
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

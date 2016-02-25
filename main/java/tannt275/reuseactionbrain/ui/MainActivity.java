@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.common.AppSharePref;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AppSharePref.putBoolean(AppConfig.FIRST_USE, false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

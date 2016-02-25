@@ -8,6 +8,8 @@ import android.os.Bundle;
 import com.facebook.appevents.AppEventsLogger;
 
 import tannt275.reuseactionbrain.R;
+import tannt275.reuseactionbrain.common.AppConfig;
+import tannt275.reuseactionbrain.common.AppSharePref;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -18,11 +20,30 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent toMain = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(toMain);
-                finish();
+                navigateActivity();
             }
         }, 2000);
+    }
+
+    public void navigateActivity() {
+
+        if (AppSharePref.getBoolean(AppConfig.FIRST_USE, true)) {
+            toTutorial();
+        } else {
+            toMainActivity();
+        }
+    }
+
+    private void toMainActivity() {
+        Intent toMain = new Intent(SplashActivity.this, MainActivity.class);
+        startActivity(toMain);
+        finish();
+    }
+
+    private void toTutorial() {
+        Intent toTutorial = new Intent(SplashActivity.this, TutorialActivity.class);
+        startActivity(toTutorial);
+        finish();
     }
 
     @Override

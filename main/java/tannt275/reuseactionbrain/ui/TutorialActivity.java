@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.Log;
 import tannt275.reuseactionbrain.ui.fragment.tutorial.FinishFragment;
@@ -27,6 +26,7 @@ public class TutorialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
+
         bottomBtn = (Button) findViewById(R.id.tutorial_button);
 
         StartFragment startFragment = new StartFragment();

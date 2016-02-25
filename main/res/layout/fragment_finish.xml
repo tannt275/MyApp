@@ -6,6 +6,7 @@
     tools:context="tannt275.reuseactionbrain.ui.fragment.tutorial.FinishFragment">
 
     <TextView
+        android:id="@+id/text_finish"
         android:textSize="20sp"
         style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="match_parent"

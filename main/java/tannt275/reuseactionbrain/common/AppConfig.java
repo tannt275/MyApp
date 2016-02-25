@@ -25,9 +25,9 @@ public class AppConfig {
     public static String MODE_NORMAL_TITLE = "Normal Mode";
 
     public static int CONDITION_BE_LEADERBOARD = 10;
-    public static int SIZE_LEADERBOARD = 10;
 
     public static boolean IS_DEV_MODE = true;
+    public static String FIRST_USE = "FIRST_USE";
 
     public static String parseTimeToString(long d) {
         String str;
