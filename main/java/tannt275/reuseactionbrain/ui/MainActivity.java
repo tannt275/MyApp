@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.facebook.appevents.AppEventsLogger;
+
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
 import tannt275.reuseactionbrain.common.AppSharePref;
@@ -171,4 +173,14 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        AppEventsLogger.deactivateApp(this);
+    }
 }

@@ -8,13 +8,10 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import java.awt.font.TextAttribute;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;

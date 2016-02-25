@@ -12,7 +12,6 @@ import java.util.List;
 
 import tannt275.reuseactionbrain.R;
 import tannt275.reuseactionbrain.common.AppConfig;
-import tannt275.reuseactionbrain.model.BaseModel;
 import tannt275.reuseactionbrain.model.MLeaderBoard;
 
 /**
