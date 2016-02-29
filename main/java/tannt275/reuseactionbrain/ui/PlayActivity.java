@@ -3,7 +3,6 @@ package tannt275.reuseactionbrain.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -39,9 +38,6 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
 
     CallbackManager callbackManager;
     ShareDialog shareDialog;
-
-
-    private Uri bitmapUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +128,10 @@ public class PlayActivity extends AppCompatActivity implements GameFragment.Game
     @Override
     public void onReplay() {
         Log.e(TAG, "onReplay action");
-        settingGameToPlay();
+//        settingGameToPlay();
+        GameFragment gameFragment = GameFragment.newInstance(_modeSet,_timeSet);
+        gameFragment.setGameCallBack(this);
+        displayFragment(gameFragment);
     }
 
     @Override

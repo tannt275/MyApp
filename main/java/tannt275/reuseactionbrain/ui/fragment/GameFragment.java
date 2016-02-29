@@ -131,15 +131,12 @@ public class GameFragment extends Fragment {
     private View.OnClickListener answerCorrectListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.e(TAG, "button correct was clicked...");
             if (_modeGame == AppConfig.MODE_NORMAL) {
                 handler.removeCallbacks(runnable);
             }
             if (gameModel.is_isCorrect()) {
-                Log.e(TAG, "user and me with same answer...");
                 nextGame();
             } else {
-                Log.e(TAG, "user and me with not same answer...");
                 endGame();
             }
 
@@ -148,15 +145,12 @@ public class GameFragment extends Fragment {
     private View.OnClickListener answerWrongListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Log.e(TAG, "button wrong was clicked...");
             if (_modeGame == AppConfig.MODE_NORMAL) {
                 handler.removeCallbacks(runnable);
             }
             if (gameModel.is_isCorrect()) {
-                Log.e(TAG, "user and me with not same answer...");
                 endGame();
             } else {
-                Log.e(TAG, "user and me with same answer...");
                 nextGame();
             }
         }
@@ -211,7 +205,7 @@ public class GameFragment extends Fragment {
      */
     private void showDialogEndGame(MLeaderBoard mLeaderBoard) {
 
-        DataBaseHandle.DataBaseCallback callback = new DataBaseHandle.DataBaseCallback() {
+        DataBaseHandle.DataBaseCallback dataBaseCallback = new DataBaseHandle.DataBaseCallback() {
             @Override
             public void onSuccess() {
                 AppDialogs.DialogCallBack callBack = new AppDialogs.DialogCallBack() {
@@ -241,7 +235,7 @@ public class GameFragment extends Fragment {
                 Log.e(TAG, "incase is error...");
             }
         };
-        dataBaseHandle.insertData(mLeaderBoard, callback);
+        dataBaseHandle.insertData(mLeaderBoard, dataBaseCallback);
     }
 
     private class CountAsynTask extends AsyncTask<String, String, String> {

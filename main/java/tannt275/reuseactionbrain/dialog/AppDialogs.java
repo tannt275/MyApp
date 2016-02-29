@@ -46,7 +46,13 @@ public class AppDialogs {
         mode.setVisibility(View.VISIBLE);
 
         DataBaseHandle dataBaseHandle = new DataBaseHandle(context);
-        bestScore.setText(String.valueOf(dataBaseHandle.getBestScore(gameModel.get_mode())));
+        int bestScoreData = dataBaseHandle.getBestScore(gameModel.get_mode());
+        if (bestScoreData < 0){
+            bestScore.setText(String.valueOf(gameModel.get_score()));
+        } else {
+
+            bestScore.setText(String.valueOf(dataBaseHandle.getBestScore(gameModel.get_mode())));
+        }
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,20 +65,24 @@ public class AppDialogs {
         replay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (callBack != null)
+                if (callBack != null){
+                    dialog.dismiss();
                     callBack.onReplay();
-                dialog.dismiss();
+
+                }
             }
         });
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (callBack != null)
+                if (callBack != null){
                     callBack.onHome();
-                dialog.dismiss();
+                    dialog.dismiss();
+                }
             }
         });
 
+        dataBaseHandle.close();
         dialog.show();
     }
 
